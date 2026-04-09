@@ -1,4 +1,115 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pathfinder Vault</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 30px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .card:hover {
+      background: #334155;
+    }
+    .hidden {
+      display: none;
+    }
+    textarea {
+      width: 80%;
+      height: 100px;
+      margin: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #22c55e;
+      border: none;
+      margin: 5px;
+      cursor: pointer;
+    }
+    .output {
+      background: #1e293b;
+      padding: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🧠 Pathfinder Vault</h1>
+
+<div id="dashboard">
+  <div class="grid">
+
+    <div class="card" onclick="openApp('nlp')">
+      🧠 NLP Generator
+    </div>
+
+    <div class="card">
+      💰 Money Engine (Coming Soon)
+    </div>
+
+    <div class="card">
+      🔥 Addiction Reset (Coming Soon)
+    </div>
+
+    <div class="card">
+      📅 Routine Builder (Coming Soon)
+    </div>
+
+  </div>
+</div>
+
+<!-- NLP APP -->
+<div id="nlpApp" class="hidden">
+
+  <button onclick="goBack()">⬅ Back</button>
+
+  <h2>NLP Script Generator</h2>
+
+  <select id="type">
+    <option value="confidence">Confidence</option>
+    <option value="anxiety">Anxiety</option>
+    <option value="motivation">Motivation</option>
+  </select><br>
+
+  <textarea id="input" placeholder="Describe your situation..."></textarea><br>
+
+  <button onclick="generate()">Generate</button>
+  <button onclick="download()">Download</button>
+
+  <div class="output" id="output"></div>
+
+</div>
+
 <script>
+
+function openApp(app) {
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("nlpApp").style.display = "block";
+}
+
+function goBack() {
+  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("nlpApp").style.display = "none";
+}
 
 function generate() {
   const input = document.getElementById("input").value;
@@ -6,45 +117,17 @@ function generate() {
 
   let script = "";
 
-  if (type === "smoking") {
-    script = `You are now releasing the habit of smoking. The craving fades. You feel clean, strong, and free. ${input}`;
-  } else if (type === "confidence") {
-    script = `Confidence rises within you. You trust yourself fully. You walk, speak, and act with certainty. ${input}`;
+  if (type === "confidence") {
+    script = `Confidence rises within you. You trust yourself fully. ${input}`;
   } else if (type === "anxiety") {
-    script = `Your body relaxes deeply. Calm flows through you. You are safe, grounded, and in control. ${input}`;
-  } else if (type === "motivation") {
-    script = `Energy builds inside you. You take action with clarity and purpose. You move forward now. ${input}`;
+    script = `Your body relaxes deeply. You feel calm and safe. ${input}`;
+  } else {
+    script = `Energy builds inside you. You take action now. ${input}`;
   }
 
   document.getElementById("output").innerText = script;
-
-  saveScript(script);
 }
 
-function saveScript(script) {
-  let scripts = JSON.parse(localStorage.getItem("scripts")) || [];
-  scripts.push(script);
-  localStorage.setItem("scripts", JSON.stringify(scripts));
-  displayScripts();
-}
-
-function displayScripts() {
-  let scripts = JSON.parse(localStorage.getItem("scripts")) || [];
-  let html = "<h2>Saved Scripts</h2>";
-
-  scripts.forEach((s) => {
-    html += `<div class="saved-box">${s}</div>`;
-  });
-
-  document.getElementById("saved").innerHTML = html;
-}
-
-function clearScripts() {
-  localStorage.removeItem("scripts");
-  displayScripts();
-}
-
-/* 🔥 YOUR DOWNLOAD FUNCTION */
 function download() {
   const text = document.getElementById("output").innerText;
 
@@ -52,17 +135,12 @@ function download() {
   const link = document.createElement("a");
 
   link.href = URL.createObjectURL(blob);
-  link.download = "nlp-script.txt";
+  link.download = "script.txt";
 
   link.click();
 }
 
-window.onload = displayScripts;
-
-<button onclick="download()">Download Script</button>
-git add .
-git commit -m "fixed download + full script block"
-git push
-
 </script>
 
+</body>
+</html>
