@@ -1,36 +1,94 @@
 
-<h1>NLP Session Generator</h1>
-<p>Your app is coming alive.</p>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>NLP Session Generator</title>
+    <title>Pathfinder NLP Engine</title>
+
+    <style>
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .app {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            width: 400px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: none;
+        }
+
+        label {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: #22c55e;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #16a34a;
+        }
+
+        .output {
+            margin-top: 20px;
+            background: #020617;
+            padding: 15px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+        }
+    </style>
 </head>
+
 <body>
 
-<h1>NLP Session Generator</h1>
-<p>Your app is coming alive.</p>
+<div class="app">
 
-<h2>Create Your NLP Session</h2>
+    <h1>🧠 NLP Engine</h1>
+    <p style="text-align:center; font-size:13px;">Build powerful sessions instantly</p>
 
-<label>Goal:</label>
-<input id="goal" placeholder="e.g. Stop smoking, reduce anxiety" />
+    <label>Goal</label>
+    <input id="goal" placeholder="e.g. Stop smoking">
 
-<br><br>
+    <br><br>
 
-<label>Techniques:</label><br>
-<input type="checkbox" value="induction"> Induction<br>
-<input type="checkbox" value="anchor"> Anchor<br>
-<input type="checkbox" value="reframe"> Reframe<br>
-<input type="checkbox" value="future"> Future Pace<br>
+    <label>Techniques</label><br>
+    <input type="checkbox" value="induction"> Induction<br>
+    <input type="checkbox" value="anchor"> Anchor<br>
+    <input type="checkbox" value="reframe"> Reframe<br>
+    <input type="checkbox" value="future"> Future Pace<br>
 
-<br>
+    <button onclick="generateSession()">Generate Session</button>
 
-<button onclick="generateSession()">Generate Session</button>
+    <div class="output" id="output"></div>
 
-<h3>Your Session:</h3>
-<pre id="output"></pre>
+</div>
 
 <script>
 function generateSession() {
@@ -45,18 +103,20 @@ function generateSession() {
 
     techniques.forEach(t => {
         if (t === "induction") {
-            script += "→ Begin with a slow breathing induction...\n";
+            script += "→ Relax your body and begin slow breathing...\n";
         }
         if (t === "anchor") {
-            script += "→ Install a powerful emotional anchor...\n";
+            script += "→ Create a powerful emotional anchor...\n";
         }
         if (t === "reframe") {
-            script += "→ Reframe limiting beliefs...\n";
+            script += "→ Shift the meaning of past experiences...\n";
         }
         if (t === "future") {
-            script += "→ Future pace the new identity...\n";
+            script += "→ Step into your future self and embody change...\n";
         }
     });
+
+    script += "\nSession Complete.";
 
     document.getElementById("output").innerText = script;
 }
