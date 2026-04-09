@@ -1,3 +1,66 @@
 
 <h1>NLP Session Generator</h1>
 <p>Your app is coming alive.</p>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NLP Session Generator</title>
+</head>
+<body>
+
+<h1>NLP Session Generator</h1>
+<p>Your app is coming alive.</p>
+
+<h2>Create Your NLP Session</h2>
+
+<label>Goal:</label>
+<input id="goal" placeholder="e.g. Stop smoking, reduce anxiety" />
+
+<br><br>
+
+<label>Techniques:</label><br>
+<input type="checkbox" value="induction"> Induction<br>
+<input type="checkbox" value="anchor"> Anchor<br>
+<input type="checkbox" value="reframe"> Reframe<br>
+<input type="checkbox" value="future"> Future Pace<br>
+
+<br>
+
+<button onclick="generateSession()">Generate Session</button>
+
+<h3>Your Session:</h3>
+<pre id="output"></pre>
+
+<script>
+function generateSession() {
+    const goal = document.getElementById("goal").value;
+
+    const checkboxes = document.querySelectorAll("input[type=checkbox]:checked");
+    let techniques = [];
+
+    checkboxes.forEach(cb => techniques.push(cb.value));
+
+    let script = `NLP SESSION\n\nGoal: ${goal}\n\n`;
+
+    techniques.forEach(t => {
+        if (t === "induction") {
+            script += "→ Begin with a slow breathing induction...\n";
+        }
+        if (t === "anchor") {
+            script += "→ Install a powerful emotional anchor...\n";
+        }
+        if (t === "reframe") {
+            script += "→ Reframe limiting beliefs...\n";
+        }
+        if (t === "future") {
+            script += "→ Future pace the new identity...\n";
+        }
+    });
+
+    document.getElementById("output").innerText = script;
+}
+</script>
+
+</body>
+</html>
