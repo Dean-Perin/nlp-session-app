@@ -1,170 +1,107 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pathfinder NLP Engine</title>
-
-    <style>
-        body {
-            background: #0f172a;
-            color: #e2e8f0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .app {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 12px;
-            width: 400px;
-            box-shadow: 0 0 25px rgba(0,0,0,0.5);
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: none;
-            margin-top: 5px;
-        }
-
-        label {
-            font-size: 14px;
-            color: #94a3b8;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            background: #22c55e;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #16a34a;
-        }
-
-        .output {
-            margin-top: 15px;
-            background: #020617;
-            padding: 15px;
-            border-radius: 8px;
-            white-space: pre-wrap;
-        }
-
-        .upgrade {
-            font-size: 12px;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .upgrade a {
-            color: #22c55e;
-        }
-    </style>
+  <title>Pathfinder NLP Engine</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+    textarea, select {
+      width: 80%;
+      margin: 10px;
+      padding: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #22c55e;
+      border: none;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 20px;
+      background: #1e293b;
+    }
+    .saved-box {
+      margin: 10px;
+      padding: 10px;
+      background: #334155;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="app">
+  <h1>🧠 Pathfinder NLP Engine</h1>
 
-    <h1>🧠 NLP Engine</h1>
-    <p style="text-align:center; font-size:13px;">Build powerful sessions instantly</p>
+  <select id="type">
+    <option value="smoking">Stop Smoking</option>
+    <option value="confidence">Confidence</option>
+    <option value="anxiety">Anxiety Relief</option>
+    <option value="motivation">Motivation</option>
+  </select><br>
 
-    <label>Goal</label>
-    <input id="goal" placeholder="e.g. Stop smoking">
+  <textarea id="input" placeholder="Describe your situation..."></textarea><br>
 
-    <br><br>
+  <button onclick="generate()">Generate Script</button>
+  <button onclick="clearScripts()">Clear Saved</button>
 
-    <label>Techniques</label><br>
-    <input type="checkbox" value="induction"> Induction<br>
-    <input type="checkbox" value="anchor"> Anchor<br>
-    <input type="checkbox" value="reframe"> Reframe<br>
-    <input type="checkbox" value="future"> Future Pace (Premium)<br>
+  <div class="output" id="output"></div>
+  <div id="saved"></div>
 
-    <button onclick="generateSession()">Generate Session</button>
-    <button onclick="copySession()">Copy Session</button>
+  <script>
+    function generate() {
+      const input = document.getElementById("input").value;
+      const type = document.getElementById("type").value;
 
-    <div class="output" id="output"></div>
+      let script = "";
 
-    <div class="upgrade">
-        🔓 Unlock full version →
-        <a href="https://yourgumroadlink.com" target="_blank">Upgrade</a>
-    </div>
+      if (type === "smoking") {
+        script = `You are now releasing the habit of smoking. The craving fades. You feel clean, strong, and free. ${input}`;
+      } else if (type === "confidence") {
+        script = `Confidence rises within you. You trust yourself fully. You walk, speak, and act with certainty. ${input}`;
+      } else if (type === "anxiety") {
+        script = `Your body relaxes deeply. Calm flows through you. You are safe, grounded, and in control. ${input}`;
+      } else if (type === "motivation") {
+        script = `Energy builds inside you. You take action with clarity and purpose. You move forward now. ${input}`;
+      }
 
-</div>
+      document.getElementById("output").innerText = script;
 
-<script>
+      saveScript(script);
+    }
 
-// 🔒 USER ACCESS
-let user = {
-    access: "free" // change to "paid" to unlock
-};
+    function saveScript(script) {
+      let scripts = JSON.parse(localStorage.getItem("scripts")) || [];
+      scripts.push(script);
+      localStorage.setItem("scripts", JSON.stringify(scripts));
+      displayScripts();
+    }
 
-// 🧠 GENERATOR
-function generateSession() {
-    const goal = document.getElementById("goal").value;
+    function displayScripts() {
+      let scripts = JSON.parse(localStorage.getItem("scripts")) || [];
+      let html = "<h2>Saved Scripts</h2>";
 
-    const checkboxes = document.querySelectorAll("input[type=checkbox]:checked");
-    let techniques = [];
+      scripts.forEach((s) => {
+        html += `<div class="saved-box">${s}</div>`;
+      });
 
-    checkboxes.forEach(cb => techniques.push(cb.value));
+      document.getElementById("saved").innerHTML = html;
+    }
 
-    let script = `NLP SESSION\n\nGoal: ${goal}\n\n`;
+    function clearScripts() {
+      localStorage.removeItem("scripts");
+      displayScripts();
+    }
 
-    techniques.forEach(t => {
-
-        if (t === "induction") {
-            script += "→ Relax your body and begin slow breathing...\n";
-        }
-
-        if (t === "anchor") {
-            script += "→ Create a powerful emotional anchor...\n";
-        }
-
-        if (t === "reframe") {
-            script += "→ Shift the meaning of past experiences...\n";
-        }
-
-        if (t === "future") {
-
-            if (user.access !== "paid") {
-                script += "🔒 Future Pacing is locked. Upgrade to unlock.\n";
-            } else {
-                script += "→ Step into your future self and embody change...\n";
-            }
-
-        }
-
-    });
-
-    script += "\nSession Complete.";
-
-    document.getElementById("output").innerText = script;
-}
-
-
-// 📋 COPY BUTTON
-function copySession() {
-    const text = document.getElementById("output").innerText;
-
-    navigator.clipboard.writeText(text)
-        .then(() => alert("Session copied!"))
-        .catch(() => alert("Copy failed"));
-}
-
-</script>
+    window.onload = displayScripts;
+  </script>
 
 </body>
 </html>
