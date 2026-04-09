@@ -1,107 +1,68 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Pathfinder NLP Engine</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
-      text-align: center;
-      padding: 40px;
-    }
-    textarea, select {
-      width: 80%;
-      margin: 10px;
-      padding: 10px;
-    }
-    button {
-      padding: 10px 20px;
-      background: #22c55e;
-      border: none;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-      margin: 5px;
-    }
-    .output {
-      margin-top: 20px;
-      padding: 20px;
-      background: #1e293b;
-    }
-    .saved-box {
-      margin: 10px;
-      padding: 10px;
-      background: #334155;
-    }
-  </style>
-</head>
-<body>
+<script>
 
-  <h1>🧠 Pathfinder NLP Engine</h1>
+function generate() {
+  const input = document.getElementById("input").value;
+  const type = document.getElementById("type").value;
 
-  <select id="type">
-    <option value="smoking">Stop Smoking</option>
-    <option value="confidence">Confidence</option>
-    <option value="anxiety">Anxiety Relief</option>
-    <option value="motivation">Motivation</option>
-  </select><br>
+  let script = "";
 
-  <textarea id="input" placeholder="Describe your situation..."></textarea><br>
+  if (type === "smoking") {
+    script = `You are now releasing the habit of smoking. The craving fades. You feel clean, strong, and free. ${input}`;
+  } else if (type === "confidence") {
+    script = `Confidence rises within you. You trust yourself fully. You walk, speak, and act with certainty. ${input}`;
+  } else if (type === "anxiety") {
+    script = `Your body relaxes deeply. Calm flows through you. You are safe, grounded, and in control. ${input}`;
+  } else if (type === "motivation") {
+    script = `Energy builds inside you. You take action with clarity and purpose. You move forward now. ${input}`;
+  }
 
-  <button onclick="generate()">Generate Script</button>
-  <button onclick="clearScripts()">Clear Saved</button>
+  document.getElementById("output").innerText = script;
 
-  <div class="output" id="output"></div>
-  <div id="saved"></div>
+  saveScript(script);
+}
 
-  <script>
-    function generate() {
-      const input = document.getElementById("input").value;
-      const type = document.getElementById("type").value;
+function saveScript(script) {
+  let scripts = JSON.parse(localStorage.getItem("scripts")) || [];
+  scripts.push(script);
+  localStorage.setItem("scripts", JSON.stringify(scripts));
+  displayScripts();
+}
 
-      let script = "";
+function displayScripts() {
+  let scripts = JSON.parse(localStorage.getItem("scripts")) || [];
+  let html = "<h2>Saved Scripts</h2>";
 
-      if (type === "smoking") {
-        script = `You are now releasing the habit of smoking. The craving fades. You feel clean, strong, and free. ${input}`;
-      } else if (type === "confidence") {
-        script = `Confidence rises within you. You trust yourself fully. You walk, speak, and act with certainty. ${input}`;
-      } else if (type === "anxiety") {
-        script = `Your body relaxes deeply. Calm flows through you. You are safe, grounded, and in control. ${input}`;
-      } else if (type === "motivation") {
-        script = `Energy builds inside you. You take action with clarity and purpose. You move forward now. ${input}`;
-      }
+  scripts.forEach((s) => {
+    html += `<div class="saved-box">${s}</div>`;
+  });
 
-      document.getElementById("output").innerText = script;
+  document.getElementById("saved").innerHTML = html;
+}
 
-      saveScript(script);
-    }
+function clearScripts() {
+  localStorage.removeItem("scripts");
+  displayScripts();
+}
 
-    function saveScript(script) {
-      let scripts = JSON.parse(localStorage.getItem("scripts")) || [];
-      scripts.push(script);
-      localStorage.setItem("scripts", JSON.stringify(scripts));
-      displayScripts();
-    }
+/* 🔥 YOUR DOWNLOAD FUNCTION */
+function download() {
+  const text = document.getElementById("output").innerText;
 
-    function displayScripts() {
-      let scripts = JSON.parse(localStorage.getItem("scripts")) || [];
-      let html = "<h2>Saved Scripts</h2>";
+  const blob = new Blob([text], { type: "text/plain" });
+  const link = document.createElement("a");
 
-      scripts.forEach((s) => {
-        html += `<div class="saved-box">${s}</div>`;
-      });
+  link.href = URL.createObjectURL(blob);
+  link.download = "nlp-script.txt";
 
-      document.getElementById("saved").innerHTML = html;
-    }
+  link.click();
+}
 
-    function clearScripts() {
-      localStorage.removeItem("scripts");
-      displayScripts();
-    }
+window.onload = displayScripts;
 
-    window.onload = displayScripts;
-  </script>
+<button onclick="download()">Download Script</button>
+git add .
+git commit -m "fixed download + full script block"
+git push
 
-</body>
-</html>
+</script>
+
