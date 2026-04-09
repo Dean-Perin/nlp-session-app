@@ -25,15 +25,14 @@
 
         h1 {
             text-align: center;
-            margin-bottom: 10px;
         }
 
         input {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
             border-radius: 6px;
             border: none;
+            margin-top: 5px;
         }
 
         label {
@@ -44,7 +43,7 @@
         button {
             width: 100%;
             padding: 12px;
-            margin-top: 15px;
+            margin-top: 10px;
             background: #22c55e;
             border: none;
             border-radius: 8px;
@@ -57,11 +56,21 @@
         }
 
         .output {
-            margin-top: 20px;
+            margin-top: 15px;
             background: #020617;
             padding: 15px;
             border-radius: 8px;
             white-space: pre-wrap;
+        }
+
+        .upgrade {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .upgrade a {
+            color: #22c55e;
         }
     </style>
 </head>
@@ -82,15 +91,28 @@
     <input type="checkbox" value="induction"> Induction<br>
     <input type="checkbox" value="anchor"> Anchor<br>
     <input type="checkbox" value="reframe"> Reframe<br>
-    <input type="checkbox" value="future"> Future Pace<br>
+    <input type="checkbox" value="future"> Future Pace (Premium)<br>
 
     <button onclick="generateSession()">Generate Session</button>
+    <button onclick="copySession()">Copy Session</button>
 
     <div class="output" id="output"></div>
+
+    <div class="upgrade">
+        🔓 Unlock full version →
+        <a href="https://yourgumroadlink.com" target="_blank">Upgrade</a>
+    </div>
 
 </div>
 
 <script>
+
+// 🔒 USER ACCESS
+let user = {
+    access: "free" // change to "paid" to unlock
+};
+
+// 🧠 GENERATOR
 function generateSession() {
     const goal = document.getElementById("goal").value;
 
@@ -102,24 +124,46 @@ function generateSession() {
     let script = `NLP SESSION\n\nGoal: ${goal}\n\n`;
 
     techniques.forEach(t => {
+
         if (t === "induction") {
             script += "→ Relax your body and begin slow breathing...\n";
         }
+
         if (t === "anchor") {
             script += "→ Create a powerful emotional anchor...\n";
         }
+
         if (t === "reframe") {
             script += "→ Shift the meaning of past experiences...\n";
         }
+
         if (t === "future") {
-            script += "→ Step into your future self and embody change...\n";
+
+            if (user.access !== "paid") {
+                script += "🔒 Future Pacing is locked. Upgrade to unlock.\n";
+            } else {
+                script += "→ Step into your future self and embody change...\n";
+            }
+
         }
+
     });
 
     script += "\nSession Complete.";
 
     document.getElementById("output").innerText = script;
 }
+
+
+// 📋 COPY BUTTON
+function copySession() {
+    const text = document.getElementById("output").innerText;
+
+    navigator.clipboard.writeText(text)
+        .then(() => alert("Session copied!"))
+        .catch(() => alert("Copy failed"));
+}
+
 </script>
 
 </body>
